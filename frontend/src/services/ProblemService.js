@@ -1,38 +1,30 @@
 import ApiService from "./ApiService";
 
-
-const PROBLEM_API_BASE_URL = '/problem';
+const PROBLEM_API_BASE_URL = '/problem'; // ✅ ONLY THIS (no /api)
 const PROBLEM_STATUS = '/status';
 const FIND_ALL = '/find-all-by-patientid/';
-const PROBLEM_WİTH_PROBLEMID = '/find-by-problemid/';
+const PROBLEM_WITH_PROBLEMID = '/find-by-problemid/';
 
 class ProblemService {
 
     getProblem(problemid) {
-        return ApiService.getAll(PROBLEM_API_BASE_URL + PROBLEM_WİTH_PROBLEMID + problemid);
+        return ApiService.getAll(PROBLEM_API_BASE_URL + PROBLEM_WITH_PROBLEMID + problemid);
     }
 
     getAllByPatientId(patientId) {
         return ApiService.getOneById(PROBLEM_API_BASE_URL + FIND_ALL + patientId);
     }
 
-    // fetchPatientByEmail(email) {
-    //     return axios.get(PATIENT_API_BASE_URL + '/find-by-email/' + email);
-    // }
-
-    delete(Id) {
-        return ApiService.deleteById(PROBLEM_API_BASE_URL + '/' + Id);
+    delete(id) {
+        return ApiService.deleteById(PROBLEM_API_BASE_URL + '/' + id);
     }
 
     add(problem) {
         return ApiService.post(PROBLEM_API_BASE_URL, problem);
     }
 
-    // editPatient(patient) {
-    //     return ApiService.put(PROBLEM_API_BASE_URL + '/' + patient.patientid, patient);
-    // }
     getProblemStatus() {
-        return ApiService.getAllDatas(PROBLEM_API_BASE_URL + PROBLEM_STATUS );
+        return ApiService.getAllDatas(PROBLEM_API_BASE_URL + PROBLEM_STATUS);
     }
 }
 

@@ -46,7 +46,7 @@ class PatientDetailModal extends Component {
                                         <li className="list-group-item"><b>Age : </b>
                                             {age !== null ? age : null}
                                         </li>
-                                        <li className="list-group-item"><b>Born Date : </b>
+                                        <li className="list-group-item"><b>Date Of Birth : </b>
                                             {this.props.patient.bornDate !== null ?
                                                 <Moment format="YYYY / MM / DD  HH:mm"> {this.props.patient.bornDate} </Moment> : null
                                             }

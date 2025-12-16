@@ -7,76 +7,81 @@ import com.example.demo.entity.enums.City;
 import com.example.demo.service.PatientService;
 import com.example.demo.util.ApiPaths;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping(ApiPaths.PatientCtrl.CTRL)
+@RequestMapping(ApiPaths.PatientCtrl.CTRL) // e.g. "/api/patients"
 public class PatientController {
 
-	@Autowired
-	private PatientService patientService;
+    private final PatientService patientService;
 
-	@GetMapping
-	public ResponseEntity<List<PatientDto>> getAll() throws Exception {
-		return  ResponseEntity.ok(patientService.findAll());
-	}
+    // ✅ Constructor injection (better than field @Autowired)
+    public PatientController(PatientService patientService) {
+        this.patientService = patientService;
+    }
 
-	@GetMapping("/find-by-id/{patientid}")
-	public ResponseEntity<PatientSingleDto> getPatientByPatientid(
-			@PathVariable(name = "patientid", required = true) Long patientid) throws Exception {
-		return ResponseEntity.ok(patientService.findByPatientId(patientid));
-	}
+    // 🔹 Get all active patients (status = 1)
+    @GetMapping
+    public ResponseEntity<List<PatientDto>> getAll() throws Exception {
+        return ResponseEntity.ok(patientService.findAll());
+    }
 
-	@GetMapping("/find-by-email/{email}")
-	public ResponseEntity<Patient> getPatientByEmail(@PathVariable(name = "email", required = true) String email)
-			throws Exception {
-		return ResponseEntity.ok(patientService.findByEmail(email));
-	}
+    // 🔹 Get single patient by ID
+    @GetMapping("/find-by-id/{patientid}")
+    public ResponseEntity<PatientSingleDto> getPatientByPatientid(
+            @PathVariable Long patientid) throws Exception {
+        return ResponseEntity.ok(patientService.findByPatientId(patientid));
+    }
 
-	@GetMapping("/find-by-name/{name}")
-	public ResponseEntity<List<Patient>> getPatientByName(@PathVariable(name = "name", required = true) String name)
-			throws Exception {
-		return ResponseEntity.ok(patientService.findByName(name));
-	}
+    // 🔹 Get patient by email
+    @GetMapping("/find-by-email/{email}")
+    public ResponseEntity<Patient> getPatientByEmail(
+            @PathVariable String email) throws Exception {
+        return ResponseEntity.ok(patientService.findByEmail(email));
+    }
 
-	@PostMapping
-	public ResponseEntity<Patient> savePatient(@Valid @RequestBody Patient patient) {
-		return ResponseEntity.ok(patientService.save(patient));
-	}
+    // 🔹 Get patient(s) by name
+    @GetMapping("/find-by-name/{name}")
+    public ResponseEntity<List<Patient>> getPatientByName(
+            @PathVariable String name) throws Exception {
+        return ResponseEntity.ok(patientService.findByName(name));
+    }
 
-	@PutMapping("/{patientid}")
-	public ResponseEntity<Boolean> updatePatient(@PathVariable(name = "patientid", required = true) Long patientid,
-			@Valid @RequestBody Patient patient) throws Exception {
-		return ResponseEntity.ok(patientService.update(patientid, patient));
-	}
+    // 🔹 Save new patient
+    @PostMapping
+    public ResponseEntity<Patient> savePatient(@Valid @RequestBody Patient patient) {
+        return ResponseEntity.ok(patientService.save(patient));
+    }
 
-	@DeleteMapping("/{patientid}")
-	public ResponseEntity<Boolean> deletePatient(@PathVariable(name = "patientid", required = true) Long patientid)
-			throws Exception {
-		return ResponseEntity.ok(patientService.delete(patientid));
-	}
+    // 🔹 Update existing patient
+    @PutMapping("/{patientid}")
+    public ResponseEntity<Boolean> updatePatient(
+            @PathVariable Long patientid,
+            @Valid @RequestBody Patient patient) throws Exception {
+        return ResponseEntity.ok(patientService.update(patientid, patient));
+    }
 
-	@GetMapping("/deleted-patient")
-	public ResponseEntity<List<PatientDto>> getAllDeletedPatients() throws Exception {
-		return ResponseEntity.ok(patientService.findAllDeletedPatients());
-	}
+    // 🔹 Soft delete patient (set status = 0)
+    @DeleteMapping("/{patientid}")
+    public ResponseEntity<Boolean> deletePatient(
+            @PathVariable Long patientid) throws Exception {
+        return ResponseEntity.ok(patientService.delete(patientid));
+    }
 
-	@GetMapping("/cities")
-	public ResponseEntity<List<City>> getAllCities() {
-		return ResponseEntity.ok(Arrays.asList(City.values()));
-	}
+    // 🔹 Get all deleted patients (status = 0)
+    @GetMapping("/deleted-patient")
+    public ResponseEntity<List<PatientDto>> getAllDeletedPatients() {
+        return ResponseEntity.ok(patientService.findAllDeletedPatients());
+    }
+
+    // 🔹 Get list of all cities (enum)
+    @GetMapping("/cities")
+    public ResponseEntity<List<City>> getAllCities() {
+        return ResponseEntity.ok(Arrays.asList(City.values()));
+    }
 }

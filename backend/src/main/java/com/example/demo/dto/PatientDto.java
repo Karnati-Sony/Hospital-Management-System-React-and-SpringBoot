@@ -25,5 +25,4 @@ public class PatientDto implements Serializable {
 	private String email;
 	private int status;
 	
-	private List<ProblemDtoForPatientSingleDto> problems;
 }

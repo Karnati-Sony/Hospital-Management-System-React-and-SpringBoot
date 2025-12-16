@@ -1,36 +1,37 @@
-import ApiService from "./ApiService";
+import axios from "axios";
 
+const BASE_URL = "http://localhost:8185/api/patient";
 
-const PATIENT_API_BASE_URL = '/patient';
-const CITIES = '/cities';
 class PatientService {
 
     getPatients() {
-        return ApiService.getAll(PATIENT_API_BASE_URL);
+        return axios.get(BASE_URL);
     }
 
+    
     getPatientById(patientId) {
-        return ApiService.getOneById(PATIENT_API_BASE_URL + '/find-by-id/' + patientId);
+        return axios.get(`${BASE_URL}/find-by-id/${patientId}`);
     }
 
-    // fetchPatientByEmail(email) {
-    //     return axios.get(PATIENT_API_BASE_URL + '/find-by-email/' + email);
-    // }
-
-    deletePatient(Id) {
-        return ApiService.deleteById(PATIENT_API_BASE_URL + '/' + Id);
+    deletePatient(id) {
+        return axios.delete(`${BASE_URL}/${id}`);
     }
 
+  
     addPatient(patient) {
-        return ApiService.post(PATIENT_API_BASE_URL, patient);
+        return axios.post(BASE_URL, patient);
     }
 
+  
     editPatient(patient) {
-        return ApiService.put(PATIENT_API_BASE_URL + '/' + patient.patientid, patient);
+        return axios.put(`${BASE_URL}/${patient.patientid}`, patient);
     }
+
+  
     getCities() {
-        return ApiService.getAllDatas(PATIENT_API_BASE_URL+CITIES);
+        return axios.get(`${BASE_URL}/cities`);
     }
 }
 
-export default new PatientService();
+const patientService = new PatientService();
+export default patientService;

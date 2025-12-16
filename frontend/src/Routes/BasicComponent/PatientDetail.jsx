@@ -16,7 +16,7 @@ class PatientDetail extends Component {
             lastname: props.lastname,
             phoneNo: props.phoneNo,
             email: props.email,
-            bornDate: props.bornDate,
+            bornDate: props.dateOfBirth,
             gender: props.gender,
             city: props.city,
             message: ''
@@ -54,7 +54,7 @@ class PatientDetail extends Component {
     render() {
         var age = null;
         if (this.props.bornDate != null) {
-            var born = Number(this.props.bornDate.substr(0, 4));
+            var born = Number(this.props.dateOfBirth.substr(0, 4));
             var now = Number(new Date().toLocaleDateString('tr-TR').substr(6, 4));
             age = now - born;
         }
@@ -70,7 +70,7 @@ class PatientDetail extends Component {
                         <li className="list-group-item"><b>Age : </b>
                             {age !== null ? age : null}
                         </li>
-                        <li className="list-group-item"><b>Born Date : </b>
+                        <li className="list-group-item"><b>Date Of Birth : </b>
                             {this.props.bornDate !== null ?
                                 <Moment format="YYYY / MM / DD  HH:mm"> {this.props.bornDate} </Moment> : null
                             }

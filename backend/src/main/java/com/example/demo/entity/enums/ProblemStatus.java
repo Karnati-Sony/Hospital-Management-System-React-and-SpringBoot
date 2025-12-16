@@ -1,9 +1,9 @@
 package com.example.demo.entity.enums;
 
 public enum ProblemStatus {
-	AYAKTA,
-	YATILIK,
-	ACİL,
-	AMELİYATHANE,
-	YOĞUN_BAKIM
+    OUT_PATIENT,      
+    IN_PATIENT,       
+    EMERGENCY,        
+    OPERATION_THEATRE,
+    ICU               
 }
